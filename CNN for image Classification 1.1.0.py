@@ -66,6 +66,8 @@ model2=models.Sequential([
     #layers.MaxPooling2D((2,2)),   #add back this pooling layer to improve performance at the cost of accuracy
     layers.Conv2D(filters=64,activation="relu", kernel_size=(3,3)),
     layers.MaxPooling2D((2,2)),
+    layers.Conv2D(filters=128,activation="relu", kernel_size=(3,3)),
+    layers.MaxPooling2D((2,2)),
     #Dense layers
     layers.Flatten(), #shapeing not needed in the middle 
     layers.Dense(64, activation="relu"),
@@ -89,7 +91,6 @@ y_pred = model2.predict(x_test)
 y_pred_classes = [np.argmax(element) for element in y_pred]
 
 print("Classification Report: \n", classification_report(y_test, y_pred_classes))
-
 
 # In[ ]:
 
