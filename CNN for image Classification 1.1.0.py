@@ -63,14 +63,13 @@ model2=models.Sequential([
     
     #CNN layers
     layers.Conv2D(filters=32,activation="relu", kernel_size=(3,3), input_shape=(32,32,3)),
-    layers.MaxPooling2D((2,2)),
-    layers.Conv2D(filters=32,activation="relu", kernel_size=(3,3)),
+    #layers.MaxPooling2D((2,2)),   #add back this pooling layer to improve performance at the cost of accuracy
+    layers.Conv2D(filters=64,activation="relu", kernel_size=(3,3)),
     layers.MaxPooling2D((2,2)),
     #Dense layers
     layers.Flatten(), #shapeing not needed in the middle 
-    layers.Dense(200, activation="relu"),
-    layers.Dense(100, activation="tanh"),
-    layers.Dense(50, activation="relu"),
+    layers.Dense(64, activation="relu"),
+    layers.Dense(32, activation="relu"),
     layers.Dense(10, activation="softmax")  #sigmoid replaced with softmax
     ])
 
@@ -78,7 +77,7 @@ model2.compile(optimizer="adam",
               loss="sparse_categorical_crossentropy",
               metrics=["accuracy"])
 
-model2.fit(x_train, y_train, epochs=10)
+model2.fit(x_train, y_train, epochs=5)
 
 #running test data
 
