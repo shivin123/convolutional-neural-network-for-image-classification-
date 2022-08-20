@@ -24,6 +24,8 @@ print("Done loading imports")
 
 classes=["airplane","automobile", "bird","cat","deer","dog","frog","horse","ship","truck"]
 
+epoch_running_count=0
+
 #checking the data format
 
 datasets.cifar10.load_data()
@@ -64,13 +66,17 @@ model2=models.Sequential([
     #CNN layers
     layers.Conv2D(filters=32,activation="relu", kernel_size=(3,3), input_shape=(32,32,3)),
     #layers.MaxPooling2D((2,2)),   #add back this pooling layer to improve performance at the cost of accuracy
-    layers.Conv2D(filters=64,activation="relu", kernel_size=(3,3)),
+    layers.Conv2D(filters=64,activation="relu", kernel_size=(1,3)),
     layers.MaxPooling2D((2,2)),
-    layers.Conv2D(filters=128,activation="relu", kernel_size=(3,3)),
+    layers.Conv2D(filters=64,activation="relu", kernel_size=(3,1)),
     layers.MaxPooling2D((2,2)),
+    
     #Dense layers
-    layers.Flatten(), #shapeing not needed in the middle 
-    layers.Dense(64, activation="relu"),
+    layers.Flatten(), #shapeing not needed in the middle
+    layers.Dense(128, activation="relu"),
+    layers.Dropout(0.50),
+    layers.Dense(64, activation="relu"), # 64 * 0.50 = 32
+    layers.Dropout(0.50),  #adjust the layer before dropout to account for the number of nodes droped
     layers.Dense(32, activation="relu"),
     layers.Dense(10, activation="softmax")  #sigmoid replaced with softmax
     ])
@@ -79,7 +85,12 @@ model2.compile(optimizer="adam",
               loss="sparse_categorical_crossentropy",
               metrics=["accuracy"])
 
-model2.fit(x_train, y_train, epochs=5)
+
+intial_epoch_count=5  #number of epochs to be run automaticaly
+
+epoch_running_count+=intial_epoch_count
+
+model2.fit(x_train, y_train, epochs=intial_epoch_count)
 
 #running test data
 
@@ -90,7 +101,27 @@ model2.evaluate(x_test, y_test)
 y_pred = model2.predict(x_test)
 y_pred_classes = [np.argmax(element) for element in y_pred]
 
+print("Number of epochs:" + str(epoch_running_count))
 print("Classification Report: \n", classification_report(y_test, y_pred_classes))
+
+def continue_training(epoch_count=5):
+    global epoch_running_count
+    
+    epoch_running_count+=epoch_count
+
+    model2.fit(x_train, y_train, epochs=epoch_count)
+
+    model2.evaluate(x_test, y_test)
+
+    y_pred = model2.predict(x_test)
+
+    y_pred_classes = [np.argmax(element) for element in y_pred]
+
+    print("Number of epochs:" + str(epoch_running_count))
+
+    print("Classification Report: \n", classification_report(y_test, y_pred_classes))
+    
+#continue_training() #use this in console to continue the training / arg1 is the number of epochs to be run default 
 
 # In[ ]:
 
