@@ -1,0 +1,29 @@
+model2=models.Sequential([
+    
+    #CNN layers
+    layers.Conv2D(filters=64,activation="elu", kernel_size=(3,3), padding='same', input_shape=(32,32,3)),
+    #layers.MaxPooling2D((2,2)),   #add back this pooling layer to improve performance at the cost of accuracy
+    layers.Conv2D(filters=64,activation="elu", kernel_size=(3,3)),
+    layers.MaxPooling2D((2,2)),
+    layers.Dropout(0.1),
+    
+    layers.Conv2D(filters=128,activation="elu", padding='same', kernel_size=(3,3)),
+    layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3)),
+    layers.MaxPooling2D((2,2)),
+    layers.Dropout(0.25),
+    
+    layers.Conv2D(filters=256,activation="elu", padding='same', kernel_size=(3,3)),
+    layers.Conv2D(filters=256,activation="elu", kernel_size=(3,3)),
+    layers.MaxPooling2D((2,2)),
+    layers.Dropout(0.50),
+    
+    
+    #Dense layers
+    layers.Flatten(), #shapeing not needed in the middle
+    #layers.Dense(400, activation="relu"),
+    #layers.Dropout(0.75),
+    layers.Dense(512, activation="elu"), #300 * 0.75 = 225
+    layers.Dropout(0.50),  #adjust the layer before dropout to account for the number of nodes droped
+    #layers.Dense(200, activation="elu"),
+    layers.Dense(100, activation="softmax")  #sigmoid replaced with softmax
+    ])
