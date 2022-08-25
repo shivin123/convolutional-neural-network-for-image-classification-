@@ -15,7 +15,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 img_height = 64
 img_width = 64
-batch_size = 16
+batch_size = 32
 
 model = keras.Sequential(
     [
@@ -27,27 +27,26 @@ model = keras.Sequential(
     layers.MaxPooling2D((2,2)),
     layers.Dropout(0.25),
     
-    #layers.Conv2D(filters=128,activation="elu", padding='same', kernel_size=(3,3)),
-    #layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3)),
-    #layers.MaxPooling2D((2,2)),
-    #layers.Dropout(0.25),
-    
     layers.Conv2D(filters=128,activation="elu", padding='same', kernel_size=(3,3)),
     layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3)),
     layers.MaxPooling2D((2,2)),
     layers.Dropout(0.50),
     
+    #layers.Conv2D(filters=256,activation="elu", padding='same', kernel_size=(3,3)),
+    #layers.Conv2D(filters=256,activation="elu", kernel_size=(3,3)),
+    #layers.MaxPooling2D((2,2)),
+    #layers.Dropout(0.50),
+    
     
     #Dense layers
     layers.Flatten(), #shapeing not needed in the middle
-    #layers.Dense(1024, activation="elu"),
+    #layers.Dense(256, activation="elu"),
     #layers.Dropout(0.50),
-    layers.Dense(256, activation="elu"), #300 * 0.75 = 225
+    layers.Dense(128, activation="elu"), #300 * 0.75 = 225
     layers.Dropout(0.50),  #adjust the layer before dropout to account for the number of nodes droped
     #layers.Dense(200, activation="elu"),
     layers.Dense(10, activation="softmax")  #sigmoid replaced with softmax
-    ]
-)
+    ])
 
 
 ds_train = tf.keras.preprocessing.image_dataset_from_directory(
@@ -79,13 +78,11 @@ ds_validation = tf.keras.preprocessing.image_dataset_from_directory(
 )
 
 
-def augment(x, y):
-    image = tf.image.random_brightness(x, max_delta=0.05)
-    return image, y
+normalization_layer = layers.Rescaling(1./255)
 
+ds_train = ds_train.map(lambda x, y: (normalization_layer(x), y))
 
-ds_train = ds_train.map(augment).cache()
-
+ds_train = ds_train.cache()
         
 
 opt = tf.keras.optimizers.Adam(
@@ -103,4 +100,5 @@ model.compile(loss='categorical_crossentropy',optimizer=opt,metrics=['accuracy']
 print("Training")
 model.fit(ds_train, epochs=5, verbose=1)
 
+# at epoch 5/ loss: 0.4711 - accuracy: 0.8403
 
