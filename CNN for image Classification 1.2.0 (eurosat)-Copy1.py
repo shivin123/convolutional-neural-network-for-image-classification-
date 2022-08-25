@@ -21,16 +21,16 @@ model = keras.Sequential(
     [
     
     #CNN layers
-    layers.Conv2D(filters=64,activation="elu", kernel_size=(3,3), padding='same', input_shape=(64,64,3)),
+    layers.Conv2D(filters=64,activation="relu", kernel_size=(3,3), padding='same', input_shape=(64,64,3)),
     #layers.MaxPooling2D((2,2)),   #add back this pooling layer to improve performance at the cost of accuracy
-    layers.Conv2D(filters=64,activation="elu", kernel_size=(3,3)),
-    layers.MaxPooling2D((2,2)),
-    layers.Dropout(0.25),
-    
-    layers.Conv2D(filters=128,activation="elu", padding='same', kernel_size=(3,3)),
-    layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3)),
+    layers.Conv2D(filters=64,activation="relu", kernel_size=(3,3)),
     layers.MaxPooling2D((2,2)),
     layers.Dropout(0.50),
+    
+    #layers.Conv2D(filters=128,activation="elu", padding='same', kernel_size=(3,3)),
+    #layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3)),
+    #layers.MaxPooling2D((2,2)),
+    #layers.Dropout(0.50),
     
     #layers.Conv2D(filters=256,activation="elu", padding='same', kernel_size=(3,3)),
     #layers.Conv2D(filters=256,activation="elu", kernel_size=(3,3)),
@@ -42,7 +42,7 @@ model = keras.Sequential(
     layers.Flatten(), #shapeing not needed in the middle
     #layers.Dense(256, activation="elu"),
     #layers.Dropout(0.50),
-    layers.Dense(128, activation="elu"), #300 * 0.75 = 225
+    layers.Dense(64, activation="elu"), #300 * 0.75 = 225
     layers.Dropout(0.50),  #adjust the layer before dropout to account for the number of nodes droped
     #layers.Dense(200, activation="elu"),
     layers.Dense(10, activation="softmax")  #sigmoid replaced with softmax
@@ -76,14 +76,15 @@ ds_validation = tf.keras.preprocessing.image_dataset_from_directory(
     validation_split=0.1,
     subset="validation",
 )
-
+AUTOTUNE = tf.data.AUTOTUNE
 
 normalization_layer = layers.Rescaling(1./255)
 
 ds_train = ds_train.map(lambda x, y: (normalization_layer(x), y))
 
-ds_train = ds_train.cache()
-        
+ds_train = ds_train.cache().prefetch(buffer_size=AUTOTUNE)
+
+ds_validation = ds_validation.map(lambda x, y: (normalization_layer(x), y))
 
 opt = tf.keras.optimizers.Adam(
     learning_rate=0.0005,
@@ -99,6 +100,16 @@ model.compile(loss='categorical_crossentropy',optimizer=opt,metrics=['accuracy']
 
 print("Training")
 model.fit(ds_train, epochs=5, verbose=1)
+
+model.evaluate(ds_validation)
+
+#classification report
+
+#y_pred = model2.predict(ds_validation)
+#y_pred_classes = [np.argmax(element) for element in y_pred]
+
+#print("Number of epochs:" + str(epoch_running_count))
+#print("Classification Report: \n", classification_report(ds_validation, y_pred_classes))
 
 # at epoch 5/ loss: 0.4711 - accuracy: 0.8403
 
