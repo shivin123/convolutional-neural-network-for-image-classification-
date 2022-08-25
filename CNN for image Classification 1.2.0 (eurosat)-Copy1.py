@@ -102,3 +102,4 @@ model.fit(ds_train, epochs=5, verbose=1)
 
 # at epoch 5/ loss: 0.4711 - accuracy: 0.8403
 
+# at epoch 10/ loss: 0.1977 - accuracy: 0.9330
