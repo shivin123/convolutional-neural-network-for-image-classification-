@@ -42,7 +42,7 @@ model = keras.Sequential(
     layers.Flatten(), #shapeing not needed in the middle
     #layers.Dense(256, activation="elu"),
     #layers.Dropout(0.50),
-    layers.Dense(64, activation="elu"), #300 * 0.75 = 225
+    layers.Dense(32, activation="elu"), #300 * 0.75 = 225
     layers.Dropout(0.50),  #adjust the layer before dropout to account for the number of nodes droped
     #layers.Dense(200, activation="elu"),
     layers.Dense(10, activation="softmax")  #sigmoid replaced with softmax
