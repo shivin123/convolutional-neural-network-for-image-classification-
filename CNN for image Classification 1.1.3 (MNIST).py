@@ -21,31 +21,6 @@ print("Done loading imports")
 
 #other info
 
-Superclasses=["aquatic_mammals","fish","flowers","food_containers","fruit_and_vegetables","household_electrical_devices",
-              "household_furniture","insects","large_carnivores","large_man-made_outdoor_things","large_natural_outdoor_scenes",
-              "large_omnivores_and_herbivores","medium-sized_mammals","non-insect_invertebrates","people","reptiles",
-              "small_mammals","trees","vehicles_1","vehicles_2"]
-classes=[['beaver', 'dolphin', 'otter', 'seal', 'whale'],
-         ['aquarium_fish', 'flatfish', 'ray', 'shark', 'trout'],
-         ['orchids', 'poppies', 'roses', 'sunflowers', 'tulips'],
-         ['bottles', 'bowls', 'cans', 'cups', 'plates'],
-         ['apples', 'mushrooms', 'oranges', 'pears', 'sweet_peppers'],
-         ['clock', 'computer_keyboard', 'lamp', 'telephone', 'television'],
-         ['bed', 'chair', 'couch', 'table', 'wardrobe'],
-         ['bee', 'beetle', 'butterfly', 'caterpillar', 'cockroach'],
-         ['bear', 'leopard', 'lion', 'tiger', 'wolf'],
-         ['bridge', 'castle', 'house', 'road', 'skyscraper'],
-         ['cloud', 'forest', 'mountain', 'plain', 'sea'],
-         ['camel', 'cattle', 'chimpanzee', 'elephant', 'kangaroo'],
-         ['fox', 'porcupine', 'possum', 'raccoon', 'skunk'],
-         ['crab', 'lobster', 'snail', 'spider', 'worm'],
-         ['baby', 'boy', 'girl', 'man', 'woman'],
-         ['crocodile', 'dinosaur', 'lizard', 'snake', 'turtle'],
-         ['hamster', 'mouse', 'rabbit', 'shrew', 'squirrel'],
-         ['maple', 'oak', 'palm', 'pine', 'willow'],
-         ['bicycle', 'bus', 'motorcycle', 'pickup_truck', 'train'],
-         ['lawn-mower', 'rocket', 'streetcar', 'tank', 'tractor']]
-
 epoch_running_count=0
 
 #checking the data format
