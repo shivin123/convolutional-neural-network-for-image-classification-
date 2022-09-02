@@ -3,6 +3,7 @@
 
 # In[2]:
 
+#This program uses a modfied version of the UC-Merced Dataset and only contains 12 labels instead of the orginal 21
 
 # Imports needed
 import os
