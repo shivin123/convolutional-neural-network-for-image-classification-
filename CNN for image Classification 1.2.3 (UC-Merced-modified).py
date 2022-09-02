@@ -99,95 +99,15 @@ model.fit(ds_train, epochs=5, verbose=1)
 
 model.evaluate(ds_validation)
 
-
-# In[7]:
-
-
 model.summary()
 
-
-# In[5]:
-
-
 model.fit(ds_train, epochs=5, verbose=1)
-
-
-# In[6]:
-
 
 model.evaluate(ds_validation)
 
 
-# In[ ]:
 
 
-from IPython.display import Image as image_jn
 
 
-# In[ ]:
-
-
-self_test = Image.open("C:/Users/cheng/OneDrive/Desktop/pyhton flie/Image processing/CNN/SAT-test-data/agri-1.png")
-width, height = self_test.size
-print(width, height)
-self_test_rs = self_test.resize((28,28),Image.ANTIALIAS)
-width_rs, height_rs = self_test_rs.size
-print(width_rs, height_rs)
-
-#self_test_rs.show()
-
-print(self_test_rs)
-answer = model(self_test_rs)
-print(answer)
-
-
-# In[ ]:
-
-
-import torch
-
-from torchvision import transforms
-
-from PIL import Image
-
-
-# In[ ]:
-
-
-tf.keras.callbacks.ModelCheckpoint
-
-
-# In[ ]:
-
-
-model = keras.Sequential(
-    [
-    
-    #CNN layers
-    layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3), padding='same', input_shape=(28,28,3)),
-    #layers.MaxPooling2D((2,2)),   #add back this pooling layer to improve performance at the cost of accuracy
-    layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3)),
-    layers.MaxPooling2D((2,2)),
-    layers.Dropout(0.50),
-    
-    #layers.Conv2D(filters=128,activation="elu", padding='same', kernel_size=(3,3)),
-    #layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3)),
-    #layers.MaxPooling2D((2,2)),
-    #layers.Dropout(0.50),
-    
-    #layers.Conv2D(filters=256,activation="elu", padding='same', kernel_size=(3,3)),
-    #layers.Conv2D(filters=256,activation="elu", kernel_size=(3,3)),
-    #layers.MaxPooling2D((2,2)),
-    #layers.Dropout(0.50),
-    
-    
-    #Dense layers
-    layers.Flatten(), #shapeing not needed in the middle
-    #layers.Dense(256, activation="elu"),
-    #layers.Dropout(0.50),
-    layers.Dense(128, activation="elu"), #300 * 0.75 = 225
-    layers.Dropout(0.50),  #adjust the layer before dropout to account for the number of nodes droped
-    #layers.Dense(200, activation="elu"),
-    layers.Dense(21, activation="softmax")  #sigmoid replaced with softmax
-    ])
 
