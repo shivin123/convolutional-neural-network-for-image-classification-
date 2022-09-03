@@ -20,23 +20,28 @@ img_height = 28
 img_width = 28
 batch_size = 10
 
+tf.config.threading.set_inter_op_parallelism_threads(2)
+tf.config.threading.set_intra_op_parallelism_threads(2)
+
 model = keras.Sequential(
     [
     
     #CNN layers
-    layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3), padding='same', input_shape=(28,28,3)),
-    layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3)),
+    layers.Conv2D(filters=256,activation="elu", kernel_size=(3,3), padding='same', input_shape=(28,28,3)),
+    layers.Conv2D(filters=256,activation="elu", kernel_size=(3,3)),
     layers.MaxPooling2D((2,2)),
     layers.Dropout(0.50),
 
-    #layers.Conv2D(filters=64,activation="elu", kernel_size=(3,3)),
-    #layers.Conv2D(filters=64,activation="elu", kernel_size=(3,3)),
+    #layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3)),
+    #layers.Conv2D(filters=128,activation="elu", kernel_size=(3,3)),
     #layers.MaxPooling2D((2,2)),
     #layers.Dropout(0.50),
         
     #Dense layers
     layers.Flatten(), #shapeing not needed in the middle
-    layers.Dense(128, activation="elu"), #300 * 0.75 = 225
+    layers.Dense(256, activation="elu"),
+    layers.Dropout(0.50),
+    layers.Dense(128, activation="elu"),
     layers.Dropout(0.50),  #adjust the layer before dropout to account for the number of nodes droped
     layers.Dense(32, activation="elu"),
     layers.Dense(12, activation="softmax")  #sigmoid replaced with softmax
